@@ -83,16 +83,56 @@ app.get("/api/pieces", (req, res) => {
 
 // Serve frontend for all non-API routes
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+  // Check if public/index.html exists
+  const indexPath = path.join(__dirname, "public", "index.html");
+  if (fs.existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    // Fallback HTML response
+    res.send(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Dombyra Ensemble</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      </head>
+      <body>
+        <h1>Dombyra Ensemble</h1>
+        <p>Welcome to the Dombyra Ensemble repertoire search service.</p>
+        <h2>Available API Endpoints:</h2>
+        <ul>
+          <li><a href="/api/repertoire">/api/repertoire</a> - Get all repertoire data</li>
+          <li>/api/search?piece=[title] - Search for people who know a piece</li>
+          <li><a href="/api/pieces">/api/pieces</a> - Get all pieces</li>
+        </ul>
+      </body>
+      </html>
+    `);
+  }
 });
 
 app.get("/index.html", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+  // Check if public/index.html exists
+  const indexPath = path.join(__dirname, "public", "index.html");
+  if (fs.existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    // Redirect to root
+    res.redirect("/");
+  }
 });
 
 // Catch-all route for SPA routing
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+  // Check if public/index.html exists
+  const indexPath = path.join(__dirname, "public", "index.html");
+  if (fs.existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    // Fallback to root
+    res.redirect("/");
+  }
 });
 
 // Start server
