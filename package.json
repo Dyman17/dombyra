@@ -8,7 +8,8 @@
     "start": "node server.js",
     "import": "node import.js",
     "import-json": "node import.js",
-    "test-json": "node test_json_import.js"
+    "test-json": "node test_json_import.js",
+    "health": "node -e 'console.log(\"OK\")'"
   },
   "keywords": [],
   "author": "",

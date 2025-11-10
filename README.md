@@ -1,3 +1,71 @@
+# Dombyra Ensemble Management System
+
+This is a web application for managing the repertoire of a dombyra ensemble.
+
+## Features
+
+- Search for ensemble members who know specific pieces
+- View complete repertoire by group
+- Mobile-responsive design
+
+## Deployment to Render
+
+### Prerequisites
+
+1. A Render account (https://render.com)
+2. This repository
+
+### Deployment Steps
+
+1. Go to your Render dashboard
+2. Click "New" and select "Web Service"
+3. Connect your GitHub repository or upload your code
+4. Configure the service:
+   - Name: Choose a name for your service
+   - Environment: Node
+   - Build command: `npm install`
+   - Start command: `npm start`
+   - Instance type: Free or paid (as preferred)
+5. Add environment variables (if using a database):
+   - `DATABASE_URL` - Your PostgreSQL database connection string
+6. Click "Create Web Service"
+
+### Environment Variables
+
+- `DATABASE_URL` - PostgreSQL database connection string (optional, falls back to JSON files)
+- `PORT` - Port to run the server on (automatically set by Render)
+
+### Notes
+
+- The application will automatically use the PORT environment variable provided by Render
+- If no DATABASE_URL is provided, the application will fall back to using the JSON files
+- The application serves static files from the `public` directory
+
+## Local Development
+
+1. Install dependencies:
+   ```
+   npm install
+   ```
+
+2. Start the server:
+   ```
+   npm start
+   ```
+
+3. Visit `http://localhost:3000` in your browser
+
+## Data Management
+
+The application can work with either:
+1. A PostgreSQL database (preferred for production)
+2. JSON files (for development and simple deployments)
+
+To import JSON data into the database:
+```
+npm run import-json
+```
+
 # Repertoire Search Application
 
 A simple application to search for people who know specific musical pieces.
