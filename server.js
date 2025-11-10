@@ -212,4 +212,9 @@ app.get('/api/repertoire', (req, res) => {
   }
 });
 
+// Serve frontend for all non-API routes
+app.get('*', (req, res) => {
+  res.sendFile(__dirname + '/public/index.html');
+});
+
 app.listen(process.env.PORT || 3000, () => console.log('Server running on port', process.env.PORT || 3000));
