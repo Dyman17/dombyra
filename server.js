@@ -1,11 +1,12 @@
 const express = require('express');
 const { Pool } = require('pg');
 const fs = require('fs');
+const path = require('path');
 const app = express();
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 
 app.use(express.json());
-app.use(express.static('public')); // сюда положишь index.html
+app.use(express.static(path.join(__dirname, 'public')));
 
 // GET endpoint for serving repertoire data
 app.get('/api/repertoire', (req, res) => {
@@ -200,21 +201,17 @@ app.post('/api/repertoire', async (req, res) => {
   }
 });
 
-// GET endpoint for serving repertoire data
-app.get('/api/repertoire', (req, res) => {
-  try {
-    const rawData = fs.readFileSync('./cleaned_repertoire.json', 'utf8');
-    const data = JSON.parse(rawData);
-    res.json(data);
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ error: e.message });
-  }
-});
-
 // Serve frontend for all non-API routes
 app.get('*', (req, res) => {
-  res.sendFile(__dirname + '/public/index.html');
+  console.log(`Catch-all route triggered for: ${req.url}`);
+  const indexPath = path.join(__dirname, 'public', 'index.html');
+  console.log(`Serving index.html from: ${indexPath}`);
+  res.sendFile(indexPath, (err) => {
+    if (err) {
+      console.error('Error serving index.html:', err);
+      res.status(500).send('Internal Server Error');
+    }
+  });
 });
 
 app.listen(process.env.PORT || 3000, () => console.log('Server running on port', process.env.PORT || 3000));
