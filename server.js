@@ -202,8 +202,8 @@ app.post('/api/repertoire', async (req, res) => {
 });
 
 // Serve frontend for all non-API routes
-app.get('*', (req, res) => {
-  console.log(`Catch-all route triggered for: ${req.url}`);
+app.get('/', (req, res) => {
+  console.log(`Root route triggered`);
   const indexPath = path.join(__dirname, 'public', 'index.html');
   console.log(`Serving index.html from: ${indexPath}`);
   res.sendFile(indexPath, (err) => {
