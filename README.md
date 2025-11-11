@@ -26,19 +26,15 @@ This is a web application for managing the repertoire of a dombyra ensemble.
    - Build command: `npm install`
    - Start command: `npm start`
    - Instance type: Free or paid (as preferred)
-5. Add environment variables (if using a database):
-   - `DATABASE_URL` - Your PostgreSQL database connection string
-6. Click "Create Web Service"
+5. Click "Create Web Service"
 
 ### Environment Variables
 
-- `DATABASE_URL` - PostgreSQL database connection string (optional, falls back to JSON files)
 - `PORT` - Port to run the server on (automatically set by Render)
 
 ### Notes
 
 - The application will automatically use the PORT environment variable provided by Render
-- If no DATABASE_URL is provided, the application will fall back to using the JSON files
 - The application serves static files from the `public` directory
 
 ## Local Development
@@ -57,76 +53,18 @@ This is a web application for managing the repertoire of a dombyra ensemble.
 
 ## Data Management
 
-The application can work with either:
-1. A PostgreSQL database (preferred for production)
-2. JSON files (for development and simple deployments)
+The application works with JSON files for data storage:
 
-To import JSON data into the database:
-```
-npm run import-json
-```
+- [repertoire.json](file:///c%3A/Users/%D0%90%D0%B4%D0%BC%D0%B8%D0%BD/Desktop/dombyra/repertoire.json) - Main repertoire data file
+- [cleaned_repertoire.json](file:///c%3A/Users/%D0%90%D0%B4%D0%BC%D0%B8%D0%BD/Desktop/dombyra/cleaned_repertoire.json) - Cleaned version of repertoire data
 
-# Repertoire Search Application
-
-A simple application to search for people who know specific musical pieces.
-
-## Features
-- Search for people who know a specific piece by title
-- Copy search results to clipboard
-- Admin endpoints to manage people, pieces, and their relationships
-- Import data from Excel files
-
-## Tech Stack
-- Frontend: HTML + CSS + Vanilla JavaScript
-- Backend: Node.js + Express
-- Database: PostgreSQL
-- Excel processing: SheetJS (xlsx package)
-
-## Setup Instructions
-
-1. Install dependencies:
-   ```
-   npm install
-   ```
-
-2. Set up PostgreSQL database:
-   - Create a PostgreSQL database
-   - Set the DATABASE_URL environment variable
-   - Run the database initialization script:
-     ```
-     node init-db.js
-     ```
-
-   Or manually run the schema:
-   ```sql
-   CREATE TABLE people (
-     id SERIAL PRIMARY KEY,
-     name TEXT NOT NULL UNIQUE
-   );
-
-   CREATE TABLE pieces (
-     id SERIAL PRIMARY KEY,
-     title TEXT NOT NULL UNIQUE
-   );
-
-   CREATE TABLE knows (
-     person_id INTEGER REFERENCES people(id) ON DELETE CASCADE,
-     piece_id INTEGER REFERENCES pieces(id) ON DELETE CASCADE,
-     PRIMARY KEY (person_id, piece_id)
-   );
-   ```
-
-3. Start the application:
-   ```
-   npm start
-   ```
+To update the repertoire data, simply edit the [repertoire.json](file:///c%3A/Users/%D0%90%D0%B4%D0%BC%D0%B8%D0%BD/Desktop/dombyra/repertoire.json) file.
 
 ## API Endpoints
 
 - `GET /api/search?piece=<title>&count=<number>` - Search for people who know a piece
-- `POST /api/people` - Add a person (admin only)
-- `POST /api/pieces` - Add a piece (admin only)
-- `POST /api/knows` - Link a person to a piece (admin only)
+- `GET /api/repertoire` - Get all repertoire data
+- `GET /api/pieces` - Get all pieces
 
 ## Data Import
 
@@ -146,16 +84,6 @@ To import data from an Excel file:
    npm run import <path-to-excel-file>
    ```
 
-### JSON Import
-
-To import data from a JSON file:
-
-1. Prepare your JSON file with the correct structure (see cleaned_repertoire.json for example)
-2. Run the import script:
-   ```
-   npm run import-json
-   ```
-
 ### Managing Repertoire Data
 
 You can also use the Python script to manage repertoire data:
@@ -169,9 +97,9 @@ You can also use the Python script to manage repertoire data:
    ```
    npm run test-json
    ```
-4. Import the data into the database:
+4. Copy the cleaned data to repertoire.json:
    ```
-   npm run import-json
+   cp cleaned_repertoire.json repertoire.json
    ```
 
 ## Deployment
@@ -181,4 +109,3 @@ To deploy on Render:
 2. Connect your repository
 3. Set the build command to `npm install`
 4. Set the start command to `npm start`
-5. Add the DATABASE_URL environment variable from your PostgreSQL instance
